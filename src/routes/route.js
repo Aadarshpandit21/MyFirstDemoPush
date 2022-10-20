@@ -2,28 +2,45 @@ const express = require('express');
 const abc = require('../introduction/intro')
 const router = express.Router();
 
+let persons= [
+  {
+  name: "PK",
+  age: 10,
+  votingStatus: false
+},
+{
+  name: "SK",
+  age: 20,
+  votingStatus: false
+},
+{
+  name: "AA",
+  age: 70,
+  votingStatus: false
+},
+{
+  name: "SC",
+  age: 5,
+  votingStatus: false
+},
+{
+  name: "HO",
+  age: 40,
+  votingStatus: false
+}
+]
 
-router.get("/sol1", function (req, res) {
+router.post("/solution", function (req, res) {
   
-    let arr= [1,2,3,5,6,7]
-     let n = arr.length;
-     let missingNumber = ((n + 2) * (n + 1)) / 2;
-  for (let i = 0; i < n; i++) {
-      missingNumber = missingNumber - arr[i];
-     }
-    res.send( { data: missingNumber } );
-})
+   let votingAge=req.query.votingAge;
+   const result = persons.reduce((acc,cum)=>{
+    if(cum.age>=votingAge){
+      cum.votingStatus=true;
+      acc.push(cum);
+       }
 
-router.get("/sol2", function (req, res) {
-  
-    let arr= [33,34, 35, 37, 38];
-    let missing=0;
-    for(let i=0;i<arr.length;i++){
-      if((arr[i+1]-arr[i])!=1){
-           missing=arr[i]+1;
-           break;
-      }
-    }
-    res.send(`array = ${arr}and missing = ${missing}`);
+    return acc;
+   },[])
+    res.send({updatedArray:result});
 })
 module.exports = router;
